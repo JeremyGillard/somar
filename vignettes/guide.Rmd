@@ -1,0 +1,27 @@
+---
+title: "Guide"
+author: "Jeremy Gillard"
+date: "Last update `r format(Sys.time(), "%d/%m/%Y")`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{guide}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Column naming convention
+
+As you can see in the next cell, the naming of the columns must follow a precise convention in order to be able to use your dataframe `experimental_data` with this package.
+
+```{r setup}
+library(somar)
+
+str(somar::experimental_data.df)
+```
