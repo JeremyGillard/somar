@@ -13,7 +13,7 @@ Authors@R: c(
 Description: The aim of this package is to facilitate the display of data relating to the motor functions of the brain.
 License: GPL-3 | file LICENSE
 Encoding: UTF-8
-LazyData: true
+LazyData: TRUE
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.0
 Depends:
