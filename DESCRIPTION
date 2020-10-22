@@ -26,3 +26,5 @@ Suggests:
     rmarkdown,
     testthat
 VignetteBuilder: knitr
+URL: https://github.com/JeremyGillard/somar
+BugReports: https://github.com/JeremyGillard/somar/issues
