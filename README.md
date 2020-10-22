@@ -58,7 +58,7 @@ The second consists in using more precisely each of the functions
 developed in this package in order to leave to the user the greatest
 possible usability.
 
-See <a href="./vignettes/detailedGuide.Rmd">Detailed Guide</a>
+See <a href="./vignettes/detailedGuide.md">Detailed Guide</a>
 
 ## License
 
