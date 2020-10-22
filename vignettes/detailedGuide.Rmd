@@ -2,7 +2,9 @@
 title: "Detailed Guide"
 author: "Jeremy Gillard"
 date: "Last update `r format(Sys.time(), '%d/%m/%Y')`"
-output: github_document
+output: 
+  github_document:
+   html_preview: false
 vignette: >
   %\VignetteIndexEntry{Detailed Guide}
   %\VignetteEngine{knitr::rmarkdown}
