@@ -1,6 +1,6 @@
 ---
 title: "Conception"
-output: github_document
+output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Conception}
   %\VignetteEngine{knitr::rmarkdown}
