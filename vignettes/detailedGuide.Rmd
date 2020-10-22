@@ -1,8 +1,10 @@
 ---
-title: "Detail Guide"
-output: rmarkdown::html_vignette
+title: "Detailed Guide"
+author: "Jeremy Gillard"
+date: "Last update `r format(Sys.time(), '%d/%m/%Y')`"
+output: github_document
 vignette: >
-  %\VignetteIndexEntry{Detail Guide}
+  %\VignetteIndexEntry{Detailed Guide}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
