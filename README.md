@@ -1,9 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# somar
-
-<!--- <img src="man/figures/logo.png" align="right" width="120" /> --->
+# somar <img src="man/figures/logo.png" align="right" width="160" />
 
 <!-- badges: start -->
 
@@ -43,20 +41,20 @@ You can install the released and development version from
 devtools::install_github("JeremyGillard/somar")
 ```
 
+R version: 3.6.3
+
 ## Getting Started
 
-It is possible to use this package in two different ways.
+It is possible to use this package in two different ways:
 
-The first use is based on data structuring and a precise naming
-convention for the variables. The second use is based on a precise
-naming convention for the variables, thus allowing the use of few
-functions that automate the whole graph construction.
+The first is to use functions that automate a large part of the work.
+Their operation is based on a structure and a precise naming convention
+for the columns of the dataframe entered.
 
 See <a href="./vignettes/guide.md">Guide</a>
 
-The second consists in using more precisely each of the functions
-developed in this package in order to leave to the user the greatest
-possible usability.
+The second is to use each of the functions available in the dataframe
+separately, in order to use them in a more personalised way.
 
 See <a href="./vignettes/detailedGuide.md">Detailed Guide</a>
 
