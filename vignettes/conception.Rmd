@@ -1,9 +1,6 @@
 ---
 title: "Conception"
-author: "Jeremy Gillard"
-date: "Last update `r format(Sys.time(), '%d/%m/%Y')`"
-output: 
-  github_document
+output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Conception}
   %\VignetteEngine{knitr::rmarkdown}
@@ -13,9 +10,7 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>",
-  fig.path = "../man/figures/README-",
-  out.width = "100%"
+  comment = "#>"
 )
 ```
 
@@ -26,4 +21,6 @@ To help me in my research, Gérard gave me some links like this <a href="https:/
 
 <img src="../man/figures/graph_dendogram.png" />
 
-
+```{r setup}
+library(somar)
+```
