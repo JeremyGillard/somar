@@ -38,7 +38,7 @@ You can install the released and development version from
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("JeremyGillard/somar")
+devtools::install_github("JeremyGillard/somar", build_vignettes = TRUE)
 ```
 
 R version: 3.6.3
@@ -51,12 +51,16 @@ The first way is to use functions that automate a large part of the
 work. Their operation is based on a structure and a precise naming
 convention for the columns of the dataframe entered.
 
-See <a href="./vignettes/guide.md">Guide</a>
+``` r
+vignette("guide", package = "somar")
+```
 
 The second way is to use each of the functions available in the
 dataframe separately, in order to use them in a more personalised way.
 
-See <a href="./vignettes/detailedguide.html">Detailed Guide</a>
+``` r
+vignette("detailedguide", package = "somar")
+```
 
 ## License
 
