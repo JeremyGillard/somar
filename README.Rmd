@@ -41,13 +41,13 @@ R version: 3.6.3
 
 It is possible to use this package in two different ways:
 
-The first is to use functions that automate a large part of the work. Their operation is based on a structure and a precise naming convention for the columns of the dataframe entered.
+The first way is to use functions that automate a large part of the work. Their operation is based on a structure and a precise naming convention for the columns of the dataframe entered.
 
 See <a href="./vignettes/guide.md">Guide</a>
 
-The second is to use each of the functions available in the dataframe separately, in order to use them in a more personalised way.
+The second way is to use each of the functions available in the dataframe separately, in order to use them in a more personalised way.
 
-See <a href="./vignettes/detailedGuide.md">Detailed Guide</a>
+See <a href="./vignettes/detailedguide.html">Detailed Guide</a>
 
 ## License
 
