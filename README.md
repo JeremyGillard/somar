@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# somar <img src="man/figures/logo.png" align="right" width="160" />
+# somar <img src="./man/figures/logo.png" align="right" width="160" />
 
 <!-- badges: start -->
 

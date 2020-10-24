@@ -1,6 +1,9 @@
 ---
 title: "Conception"
-output: rmarkdown::html_vignette
+author: "Jeremy Gillard"
+date: "Last update `r format(Sys.time(), '%d/%m/%Y')`"
+output: 
+  github_document
 vignette: >
   %\VignetteIndexEntry{Conception}
   %\VignetteEngine{knitr::rmarkdown}
@@ -10,10 +13,17 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  fig.path = "../man/figures/README-",
+  out.width = "100%"
 )
 ```
 
-```{r setup}
-library(somar)
-```
+# Initial Idea
+
+The initial idea was to use figures such as graphs or dendograms to represent some somatotopy data.
+To help me in my research, Gérard gave me some links like this <a href="https://www.r-graph-gallery.com/index.html" target="_blank">one</a> showing what it was possibly possible to do with the R language depending on the chosen bookshops.
+
+<img src="../man/figures/graph_dendogram.png" />
+
+
