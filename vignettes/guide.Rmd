@@ -1,6 +1,6 @@
 ---
 title: "Guide"
-output: rmarkdown::html_vignette
+output: rmarkdown::html_document
 vignette: >
   %\VignetteIndexEntry{Guide}
   %\VignetteEngine{knitr::rmarkdown}
@@ -13,6 +13,8 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 ```
+
+# This is the .........................th test...
 
 ```{r setup}
 library(somar)
