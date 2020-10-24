@@ -39,13 +39,17 @@ My first objective was therefore to construct a Graph representation of the data
 
 The data given to me was in the following form.
 
-```{r setup}
-options(width = 300)
+```{r include=FALSE}
 library(somar)
+options(width = 300)
 ```
 
+For a better readability of the code, the dataframe included in the package initially under the name somar::experimental_data.df will simply be named df.
+
 ```{r}
-str(somar::experimental_data.df)
+df <- somar::experimental_data.df
+
+str(df)
 ```
 
 This dataframe above can be divided into 4 main parts.
@@ -53,19 +57,19 @@ This dataframe above can be divided into 4 main parts.
 **Metadata columns:** describing the conditions of the experiment as well as the mean of the related R-values
 
 ```{r}
-somar::experimental_data.df[, 1:3]
+df[, 1:3]
 ```
 
 **Correlation coefficients columns:** corresponding to the latter conditions
 
 ```{r}
-somar::experimental_data.df[, 4:8]
+df[, 4:8]
 ```
 
 **The p-value columns:** corresponding to the latter conditions
 
 ```{r}
-somar::experimental_data.df[, 14:18]
+df[, 14:18]
 ```
 
 **Other values columns:** that Gérard asked me not to take care of (CI columns)
@@ -76,14 +80,117 @@ The construction of basic graphs requires more precisely a sample as follows.
 ```{r}
 sample_number <- 1
 
-somar::experimental_data.df[sample_number, 4:8]
-somar::experimental_data.df[sample_number, 14:18]
+df[sample_number, 4:8]
+df[sample_number, 14:18]
 ```
 
 It may be interesting later on that the data separation of a dataframe like the latter can be done automatically (respecting a column naming convention and a precise dataframe structure). This is so that the user can have a quick and general idea of each of his graphs in order to make a more precise selection afterwards.
 
+# Automatic segmentation of the data frame
+
+Given the structure of this dataframe, 
+
+## naming convention number 1
+```
+Metadata columns must not contain more than one underscore.
+```
+
+```{r}
+regex_pattern <- "\\_[A-z]+\\_"
+
+meta_df <- df[-grep(regex_pattern, names(df))]
+data_df <- df[grep(regex_pattern, names(df))]
+meta_df
+```
+
+## naming convention number 2
+```
+The name of the data to be extracted must prefix the relevant zone pair. It must also be separated from an underscore.
+```
+This makes it possible to first make a list of the various parameters.
+
+```{r}
+library(stringr)
+extract_prefix <- function(column_name) {
+  unlist(str_split(column_name, "_"))[1]
+}
+
+prefix.vec <- unique(sapply(names(data_df), extract_prefix))
+prefix.vec
+```
+
+And in a second step to separate the dataframe into dataframes containing only one parameter.
+
+```{r}
+R_regex_pattern <- paste("^", prefix.vec[1], sep="")
+CI_regex_pattern <- paste("^", prefix.vec[2], sep="")
+P_regex_pattern <- paste("^", prefix.vec[3], sep="")
+
+R_df <- data_df[grep(R_regex_pattern, names(data_df))]
+CI_df <- data_df[grep(CI_regex_pattern, names(data_df))]
+P_df <- data_df[grep(P_regex_pattern, names(data_df))]
+
+R_df
+```
+
+It is certain that in a specific function, it will be a question of recovering each of the above dataframes with the help of a loop.
+
+It is then possible to gather data about a certain meta parameter as follows.
+Ex : Penalty 1 and StimType 1 at row 1
+
+```{r}
+
+row <- 1
+R_df_sample <- R_df[row,]
+CI_df_sample <- CI_df[row,]
+P_df_sample <- P_df[row,]
+
+row.names(R_df_sample) <- "R"
+row.names(CI_df_sample) <- "CI"
+row.names(P_df_sample) <- "P"
+
+# uniformity of column names to be able to bind the dataframe samples
+
+substract_prefix <- function(column_name, prefix) {
+  substr(column_name, nchar(prefix) + 1, nchar(column_name))
+}
+
+R_prefix_to_substract <- paste(prefix.vec[1], "_", sep="")
+names(R_df_sample) <- sapply(
+  X = names(R_df_sample), 
+  F = function(column_name) substract_prefix(column_name, R_prefix_to_substract))
+
+CI_prefix_to_substract <- paste(prefix.vec[2], "_", sep="")
+names(CI_df_sample) <- sapply(
+  X = names(CI_df_sample), 
+  F = function(column_name) substract_prefix(column_name, CI_prefix_to_substract))
+
+
+p_prefix_to_substract <- paste(prefix.vec[3], "_", sep="")
+names(P_df_sample) <- sapply(
+  X = names(P_df_sample), 
+  F = function(column_name) substract_prefix(column_name, p_prefix_to_substract))
+
+dataframe_unit <- rbind(R_df_sample, P_df_sample, CI_df_sample)
+dataframe_unit
+```
+
+Finally for a better manipulation of the data in relation to the graphs to be built, I thought it might be interesting to link the metadata and their respective data frame using the data structure of the list.
+
+```{r}
+Penalty <- 1
+StimType <- 1
+
+l <- list(Penalty, StimType, dataframe_unit)
+names(l) <- c("Penalty", "StimType", "Dataframe")
+l
+```
+
+## naming convention number 3
+It is necessary to have a last rule for the correct processing of data in the construction of the graph.
+```
+Prefix the zones by NnSel for a non-selected zone and by Sel for a selected zone.
+```
+
 # Graph Construction
 
-
-
-# Automatic segmentation of the data frame
