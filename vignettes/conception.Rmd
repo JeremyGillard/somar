@@ -90,7 +90,7 @@ It may be interesting later on that the data separation of a dataframe like the 
 
 Given the structure of this dataframe, 
 
-## naming convention number 1
+## Naming Convention 1
 ```
 Metadata columns must not contain more than one underscore.
 ```
@@ -103,7 +103,7 @@ data_df <- df[grep(regex_pattern, names(df))]
 meta_df
 ```
 
-## naming convention number 2
+## Naming Convention 2
 ```
 The name of the data to be extracted must prefix the relevant zone pair. It must also be separated from an underscore.
 ```
@@ -186,11 +186,168 @@ names(l) <- c("Penalty", "StimType", "Dataframe")
 l
 ```
 
-## naming convention number 3
+## Naming Convention 3
 It is necessary to have a last rule for the correct processing of data in the construction of the graph.
 ```
 Prefix the zones by NnSel for a non-selected zone and by Sel for a selected zone.
 ```
 
-# Graph Construction
+# Unique Graph Construction
 
+## Graph Construction
+
+At this stage, it might then be interesting to construct the graph simply by splitting the column names and giving them to the graph builder.
+
+```{r fig.align="center"}
+library(igraph)
+
+names.vec <- names(dataframe_unit)
+node_list.vec <- unlist(lapply(names.vec, function(str) { unlist(str_split(str, "_")) }))
+
+g <- graph(node_list.vec, directed = FALSE) %>%
+  set_edge_attr("R", value = as.vector(t(dataframe_unit[1,]))) %>%
+  set_edge_attr("P", value = as.vector(t(dataframe_unit[2,]))) %>%
+  set_edge_attr("CI", value = as.vector(t(dataframe_unit[3,])))
+
+plot(g)
+```
+
+## Graph Layout
+
+Gérard's idea in graph construction was to have a layout of the areas resembling the theoretical layout (somatotopy). In order to do this I had to create a new function creating a semi-circular layout. Traditional graph construction layouts do not implement this layout.
+
+```{r fig.align="center"}
+layout_in_semicircle <- function(graph) {
+  number_of_vertex <- vcount(graph)
+  layout_matrix <- matrix(ncol = 2)
+  for (i in 1:number_of_vertex) {
+    x <- cos((i * pi / number_of_vertex) - (pi / number_of_vertex) / 2)
+    y <- sin((i * pi / number_of_vertex) - (pi / number_of_vertex) / 2)
+    if (is.na(layout_matrix[1, 1])) {
+      layout_matrix[1,] <- c(x, y)
+    } else {
+      layout_matrix <- rbind(layout_matrix, c(x, y))
+    }
+  }
+  layout_matrix
+}
+
+l <- layout_in_semicircle(g)
+plot(g, layout = l, asp = 0.4)
+```
+
+## Graph nodes order
+
+The next step was then to make the knots respect the "somatotopy order".
+
+```{r fig.align="center"}
+columns_name <- as_ids(V(g))
+
+Sels <- columns_name[sapply(columns_name, grepl, pattern="^Sel")]
+NnSels <- columns_name[sapply(columns_name, grepl, pattern="^NnSel")]
+
+order_sels <- function(names) {
+  prefix <- ""
+  if (grepl(names[1], pattern="^S")) {
+    prefix <- "Sel"
+  } else {
+    prefix <- "NnSel"
+  }
+  normal_names_cols <- substr(names, str_length(prefix) + 1, str_length(names))
+  f_cols <- factor(normal_names_cols, ordered = TRUE, levels = somatotopy.fac)
+  sequence <- order(f_cols)
+  if (prefix == "NnSel") {
+    for (i in 1:length(sequence)) {
+      sequence[i] <- ((length(sequence) * 2) + 1) - sequence[i]
+    }
+  }
+  sequence
+}
+
+sequence <- c(order_sels(Sels), order_sels(NnSels))
+
+g <- permute(g, sequence)
+
+plot(g, layout = l, asp = 0.4)
+```
+
+## Graph Aesthetics
+
+The final step was then to ensure that the visual attributes of the graph reflected the attributes that had been assigned to its construction.
+
+### Edge Color
+
+```{r}
+color_scale <- colorRampPalette(c("red4", "red1", "yellow", "lawngreen",  "forestgreen"))
+precision_scale <- 1000
+color_pallet <- color_scale(precision_scale);
+
+edgeColor <- function(r) {
+  color_pallet[abs(signif(r, 2)) * precision_scale]
+}
+
+E(g)$color <- edgeColor(E(g)$R)
+```
+
+### Edge Width
+
+```{r}
+edge_max_width <- 50
+edge_min_width <- 1
+
+edgeWidth <- function(r, minWidth, maxWidth) {
+  range_of_values <- maxWidth - minWidth
+  unit <- range_of_values / precision_scale
+  minWidth + unit * abs(signif(r, 2)) * precision_scale
+}
+
+E(g)$width <- edgeWidth(E(g)$R, edge_min_width, edge_max_width)
+```
+
+### Edge Continuity according to P value
+
+```{r}
+E(g)$lty <- ifelse(E(g)$P > 0.05, "dotted", "solid")
+```
+
+### Edge Curve
+
+```{r}
+E(g)$curved <- seq(0, 0.7, length = ecount(g))
+```
+
+### Selected - NnSelected Vertex (-prefix)
+
+```{r}
+V(g)$selected <- grepl(as_ids(V(g)), pattern="^S")
+V(g)$label <- ifelse(V(g)$selected, substract_prefix(V(g)$name, "Sel"), substract_prefix(V(g)$name, "NnSel"))
+V(g)$color <- ifelse(V(g)$selected, "gray60", "gray90")
+```
+
+### Vertex Static Attributes
+
+```{r fig.align="center"}
+V(g)$size <- 40
+V(g)$frame.color <- ifelse(degree(g) > 1, "forestgreen", "gray")
+V(g)$frame.width <- 2
+V(g)$label.cex <- 2
+V(g)$label.family=""
+V(g)$label.cex=1.4
+V(g)$label.color="black"
+
+plot(g, layout = l, asp = 0.4)
+```
+
+### "Legend"
+
+```{r eval=FALSE}
+legend("topleft", legend=c("P ≤ 0.05", "P > 0.05"), lty=1:2, cex=1)
+legend("topright", c("Selected","Non Selected"), fill=c("gray60", "gray90"), cex=1)
+legend(-1.3, 1.3 , title="|R|", c("0", "0.25", "0.5", "0.75", "1"), fill=c("red4", "red1", "yellow", "lawngreen", "forestgreen"), cex=0.8)
+```
+
+# Conclusion - version 1.0.0
+
+After much research and testing, I realised that it would be difficult with igraph to have a graph as aesthetically pleasing as the examples I was given at the beginning. It might then be interesting to see, if desired, how to translate these different structures with ggraph for example. As far as the caption is concerned, I think it will be more interesting for the researcher to add them later on top of the png image generated by igraph. The solutions given by plot and igraph being rather limited.
+
+Finally, I would not have had the time to work on the construction of a dendogram so much the handling of the R language, of the various libraries and the development time of this first version will have taken me some time.
