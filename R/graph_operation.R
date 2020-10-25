@@ -54,6 +54,38 @@ layout_in_semicircle <- function(graph) {
 }
 
 
+#' graph_structure_construction
+#'
+#' Graph structure construction returns an igraph::graph structure with all
+#' the attributes of the dataframe unit
+#'
+#' graph_structure_construction returns an igraph::graph structure with all
+#' the attributes of the dataframe unit
+#'
+#' @param dataframe_unit data.frame. The dataframe unit built using data
+#' separation and prefix functions
+#'
+#' @importFrom igraph graph set.edge.attribute
+#'
+#' @return igraph::graph. A graph structure
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#'     graph_structure_construction(dataframe_unit)
+#' }
+graph_structure_construction <- function(dataframe_unit) {
+  nodes.vec <- node_vector_from_dataframe_unit(dataframe_unit)
+
+  g <- graph(nodes.vec, directed = FALSE)
+
+  for (i in 1:nrow(dataframe_unit)) {
+    g <- set.edge.attribute(g, row.names(dataframe_unit)[i], value = as.vector(t(dataframe_unit[i,])))
+  }
+
+  g
+}
+
 #' sequence_order_nodes_according_somatotpy
 #'
 #' Orders the nodes to reflect the real position of the areas in somatotopy.
@@ -91,4 +123,207 @@ sequence_order_nodes_according_somatotpy <- function(names) {
     }
   }
   sequence
+}
+
+#' nodes_permutation_somatotopy
+#'
+#' Nodes Permutation Somatotopy basé sur la fonction sequence_order_nodes_according_somatotpy,
+#' reordonne les noeds du graph afin qu'il respecte la disposition selon les zones en somatotopie.
+#' For this function to work correctly, it is necessary that the columns respect the naming convention
+#' as follow "zoneName"_NnSel "zoneName" or Salt "zoneName"_Sel "zoneName"
+#' or SelNn "zoneName"_Sel "zoneName" be respected beforehand.
+#'
+#' nodes_permutation_somatotopy reorders the graph noodes so that it respects
+#' the layout according to the somatotopic areas and returns a new graph.
+#'
+#' @param g igraph::graph. The graph to be reordered.
+#'
+#' @importFrom igraph as_ids V permute
+#'
+#' @return igraph::graph. The reordered graph.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#'     nodes_permutation_somatotopy(graph)
+#' }
+nodes_permutation_somatotopy <- function(g) {
+  columns_name <- as_ids(V(g))
+
+  Sels <- columns_name[sapply(columns_name, grepl, pattern="^Sel")] # Could be a function
+  NnSels <- columns_name[sapply(columns_name, grepl, pattern="^NnSel")]
+
+  sequence <- c(sequence_order_nodes_according_somatotpy(Sels),
+                sequence_order_nodes_according_somatotpy(NnSels))
+
+  permute(g, sequence)
+}
+
+
+#' default_edge_color_aes
+#'
+#' default_edge_color_aes applies a default edge color aesthetics for the graph
+#'
+#' @param g the graph concerned
+#'
+#' @importFrom grDevices colorRampPalette
+#' @importFrom igraph E E<-
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#'     default_edge_color_aes(graph)
+#' }
+default_edge_color_aes <- function(g) {
+  precision_scale <- 1000
+  color_scale <- colorRampPalette(c("red4", "red1", "yellow", "lawngreen",  "forestgreen"))
+  color_pallet <- color_scale(precision_scale);
+
+  edgeColor <- function(r) {
+    color_pallet[abs(signif(r, 3)) * precision_scale]
+  }
+
+  E(g)$color <- edgeColor(E(g)$R)
+}
+
+
+
+
+#' default_edge_width_aes
+#'
+#' default_edge_width_aes applies a default edge width aesthetics for the graph
+#'
+#' @param g the graph concerned
+#'
+#' @importFrom igraph E E<-
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#'     default_edge_width_aes(graph)
+#' }
+default_edge_width_aes <- function(g) {
+  precision_scale <- 1000
+  edge_max_width <- 50
+  edge_min_width <- 1
+
+  edgeWidth <- function(r, minWidth, maxWidth) {
+    range_of_values <- maxWidth - minWidth
+    unit <- range_of_values / precision_scale
+    minWidth + unit * abs(signif(r, 2)) * precision_scale
+  }
+
+  E(g)$width <- edgeWidth(E(g)$R, edge_min_width, edge_max_width)
+}
+
+
+#' default_edge_continuity_aes
+#'
+#' default_edge_continuity_aes applies a default edge continuity aesthetics for
+#' the graph
+#'
+#' @param g the graph concerned
+#'
+#' @importFrom igraph E E<-
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#'     default_edge@_continuity_aes(graph)
+#' }
+default_edge_continuity_aes <- function(g) {
+  E(g)$lty <- ifelse(E(g)$P > 0.05, "dotted", "solid")
+}
+
+
+#' default_edge_curve_aes
+#'
+#' default_edge_curve_aes applies a default edge curve aesthetics for
+#' the graph
+#'
+#' @param g the graph concerned
+#'
+#' @importFrom igraph E E<- ecount
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#'     default_edge_curve_aes(graph)
+#' }
+default_edge_curve_aes <- function(g) {
+  E(g)$curved <- seq(0, 0.7, length = ecount(g))
+}
+
+
+#' default_selNnSel_vertex_aes
+#'
+#' default_selNnSel_vertex_aes applies a default Sel and NnSel aesthetics for
+#' the vertices of the graph
+#'
+#' @param g the graph concerned
+#'
+#' @importFrom igraph V V<-
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#'     default_selNnSel_vertex_aes(graph)
+#' }
+default_selNnSel_vertex_aes <- function(g) {
+  V(g)$selected <- grepl(as_ids(V(g)), pattern="^S")
+  V(g)$label <- ifelse(V(g)$selected, substract_prefix(V(g)$name, "Sel"), substract_prefix(V(g)$name, "NnSel"))
+  V(g)$color <- ifelse(V(g)$selected, "gray60", "gray90")
+}
+
+
+#' default_vertex_aes
+#'
+#' default_vertex_aes applies a default vertex aesthetics for
+#' the graph
+#'
+#' @param g the graph concerned
+#'
+#' @importFrom igraph V V<- degree
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#'     default_vertex_aes(graph)
+#' }
+default_vertex_aes <- function(g) {
+  V(g)$size <- 40
+  V(g)$frame.color <- ifelse(degree(g) > 1, "forestgreen", "gray")
+  V(g)$frame.width <- 2
+  V(g)$label.cex <- 2
+  V(g)$label.family=""
+  V(g)$label.cex=1.4
+  V(g)$label.color="black"
+}
+
+
+#' default_graph_aesthetic
+#'
+#' default_graph_aesthetic applies a default aesthetics for the graph
+#'
+#' @param g the graph concerned
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#'     default_graph_aesthetic(graph)
+#' }
+default_graph_aesthetic <- function(g) {
+  default_edge_color_aes(g)
+  default_edge_width_aes(g)
+  default_edge_continuity_aes(g)
+  default_edge_curve_aes(g)
+  default_selNnSel_vertex_aes(g)
+  default_vertex_aes(g)
 }
