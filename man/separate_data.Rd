@@ -9,7 +9,8 @@ separate_data(dataframe, column_regex_pattern, inverse = FALSE)
 \arguments{
 \item{dataframe}{a dataframe.}
 
-\item{column_regex_pattern}{character string containing a regular expression that represente the column selection.}
+\item{column_regex_pattern}{character string containing a regular expression that represente the column selection.
+If an empty chain is passed the dataframe will be returned intact.}
 
 \item{inverse}{logical. The function returns the inverse of the result if this parameter is set to true.}
 }
