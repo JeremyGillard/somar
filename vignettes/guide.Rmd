@@ -14,10 +14,32 @@ knitr::opts_chunk$set(
 )
 ```
 
-# Guide Title
+# Road Map
 
-## Guide SubTitle
+Pour tirer un maximum de cette première version, le dataframe à traiter doit idéalement respecter une certaine convention de nommage de ces colonnes.
+
+- First of all, the names related to the somatotopy zones must be prefixed with a Salt or NnSel to designate whether it is a selected zone or not. 
+
+- The two related areas in a column must then be separated by an underscore.
+
+- The variable related to the last two must then prefix the name of the column followed by an underscore.
+
+- Finally, the metadata must not contain more than one underscore.
+
+**For a visual example, you can refer directly to the experimental dataset directly accessible in the pacakge somar::experimental_data.df**
 
 ```{r setup}
 library(somar)
+df <- somar::experimental_data.df
+
+str(df)
+```
+
+If each of these conditions is well respected, it is then possible to use the automatic function of the package. Please note that this function has been created to give the user a visual overview (graph) of each of the lines of his dataframe so that he can then make a selection and redraw the graphs that he thinks are the most relevant using the other available functions.
+
+**Warnings:** Beware the graph ethic depends strongly on the attributes that have been added to your dataframe. So it goes without saying that this part will certainly have to be customized according to your needs. This is why there is a detailed guide for more details. As well as a design thumbnail if you want to know the construction logic behind this package.
+
+```{r fig.align="center", out.width = '100%'}
+# grid_graph_automatic_construction(df)
+# Unfortunately not very interesting to display in a thumbnail due to the space available.
 ```

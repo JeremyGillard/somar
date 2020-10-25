@@ -9,6 +9,9 @@ default_edge_continuity_aes(g)
 \arguments{
 \item{g}{the graph concerned}
 }
+\value{
+igraph::graph. The the graph with the ethic.
+}
 \description{
 default_edge_continuity_aes applies a default edge continuity aesthetics for
 the graph

@@ -9,6 +9,9 @@ default_edge_curve_aes(g)
 \arguments{
 \item{g}{the graph concerned}
 }
+\value{
+igraph::graph. The the graph with the ethic.
+}
 \description{
 default_edge_curve_aes applies a default edge curve aesthetics for
 the graph

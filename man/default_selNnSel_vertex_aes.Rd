@@ -9,6 +9,9 @@ default_selNnSel_vertex_aes(g)
 \arguments{
 \item{g}{the graph concerned}
 }
+\value{
+igraph::graph. The the graph with the ethic.
+}
 \description{
 default_selNnSel_vertex_aes applies a default Sel and NnSel aesthetics for
 the vertices of the graph

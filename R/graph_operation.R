@@ -169,6 +169,7 @@ nodes_permutation_somatotopy <- function(g) {
 #' @importFrom grDevices colorRampPalette
 #' @importFrom igraph E E<-
 #'
+#' @return igraph::graph. The the graph with the ethic.
 #' @export
 #'
 #' @examples
@@ -185,6 +186,7 @@ default_edge_color_aes <- function(g) {
   }
 
   E(g)$color <- edgeColor(E(g)$R)
+  g
 }
 
 
@@ -198,6 +200,7 @@ default_edge_color_aes <- function(g) {
 #'
 #' @importFrom igraph E E<-
 #'
+#' @return igraph::graph. The the graph with the ethic.
 #' @export
 #'
 #' @examples
@@ -216,6 +219,7 @@ default_edge_width_aes <- function(g) {
   }
 
   E(g)$width <- edgeWidth(E(g)$R, edge_min_width, edge_max_width)
+  g
 }
 
 
@@ -228,6 +232,7 @@ default_edge_width_aes <- function(g) {
 #'
 #' @importFrom igraph E E<-
 #'
+#' @return igraph::graph. The the graph with the ethic.
 #' @export
 #'
 #' @examples
@@ -235,7 +240,8 @@ default_edge_width_aes <- function(g) {
 #'     default_edge@_continuity_aes(graph)
 #' }
 default_edge_continuity_aes <- function(g) {
-  E(g)$lty <- ifelse(E(g)$P > 0.05, "dotted", "solid")
+  E(g)$lty <- ifelse(E(g)$p > 0.05, "dotted", "solid")
+  g
 }
 
 
@@ -248,6 +254,7 @@ default_edge_continuity_aes <- function(g) {
 #'
 #' @importFrom igraph E E<- ecount
 #'
+#' @return igraph::graph. The the graph with the ethic.
 #' @export
 #'
 #' @examples
@@ -256,6 +263,7 @@ default_edge_continuity_aes <- function(g) {
 #' }
 default_edge_curve_aes <- function(g) {
   E(g)$curved <- seq(0, 0.7, length = ecount(g))
+  g
 }
 
 
@@ -268,6 +276,7 @@ default_edge_curve_aes <- function(g) {
 #'
 #' @importFrom igraph V V<-
 #'
+#' @return igraph::graph. The the graph with the ethic.
 #' @export
 #'
 #' @examples
@@ -278,6 +287,7 @@ default_selNnSel_vertex_aes <- function(g) {
   V(g)$selected <- grepl(as_ids(V(g)), pattern="^S")
   V(g)$label <- ifelse(V(g)$selected, substract_prefix(V(g)$name, "Sel"), substract_prefix(V(g)$name, "NnSel"))
   V(g)$color <- ifelse(V(g)$selected, "gray60", "gray90")
+  g
 }
 
 
@@ -290,6 +300,7 @@ default_selNnSel_vertex_aes <- function(g) {
 #'
 #' @importFrom igraph V V<- degree
 #'
+#' @return igraph::graph. The the graph with the ethic.
 #' @export
 #'
 #' @examples
@@ -304,6 +315,7 @@ default_vertex_aes <- function(g) {
   V(g)$label.family=""
   V(g)$label.cex=1.4
   V(g)$label.color="black"
+  g
 }
 
 
@@ -313,6 +325,7 @@ default_vertex_aes <- function(g) {
 #'
 #' @param g the graph concerned
 #'
+#' @return igraph::graph. The the graph with the ethic.
 #' @export
 #'
 #' @examples
@@ -320,10 +333,11 @@ default_vertex_aes <- function(g) {
 #'     default_graph_aesthetic(graph)
 #' }
 default_graph_aesthetic <- function(g) {
-  default_edge_color_aes(g)
-  default_edge_width_aes(g)
-  default_edge_continuity_aes(g)
-  default_edge_curve_aes(g)
-  default_selNnSel_vertex_aes(g)
-  default_vertex_aes(g)
+  g <- default_edge_color_aes(g)
+  g <- default_edge_width_aes(g)
+  g <- default_edge_continuity_aes(g)
+  g <- default_edge_curve_aes(g)
+  g <- default_selNnSel_vertex_aes(g)
+  g <- default_vertex_aes(g)
+  g
 }

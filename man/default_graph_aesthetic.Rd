@@ -9,6 +9,9 @@ default_graph_aesthetic(g)
 \arguments{
 \item{g}{the graph concerned}
 }
+\value{
+igraph::graph. The the graph with the ethic.
+}
 \description{
 default_graph_aesthetic applies a default aesthetics for the graph
 }

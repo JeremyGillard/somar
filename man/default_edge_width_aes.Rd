@@ -9,6 +9,9 @@ default_edge_width_aes(g)
 \arguments{
 \item{g}{the graph concerned}
 }
+\value{
+igraph::graph. The the graph with the ethic.
+}
 \description{
 default_edge_width_aes applies a default edge width aesthetics for the graph
 }

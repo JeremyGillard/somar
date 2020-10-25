@@ -114,16 +114,81 @@ plot(g, layout = layout, asp = 0.4)
 Finally, make sure that the attributes of the graph are visible on the vertices and edges.
 At this stage, you have the choice between changing the aesthetics of the graph according to your criteria or using one of the functions to display a default aesthetics.
 
-## Default Aesthetics
+# Graph Aesthetic
 
-You can then select one of the default esthetic functions (like default_vertex_aes(g), ...) or apply them all with the following function.
+Beware the graph ethic depends strongly on the attributes that have been added to your dataframe. So it goes without saying that this part will certainly have to be customized according to your needs.
+
+## Custom Aesthetics
+
+### Edge Color
+
+```{r}
+color_scale <- colorRampPalette(c("red4", "red1", "yellow", "lawngreen",  "forestgreen"))
+precision_scale <- 1000
+color_pallet <- color_scale(precision_scale);
+
+edgeColor <- function(r) {
+  color_pallet[abs(signif(r, 3)) * precision_scale]
+}
+
+E(g)$color <- edgeColor(E(g)$R)
+```
+
+### Edge Width
+
+```{r}
+edge_max_width <- 50
+edge_min_width <- 1
+
+edgeWidth <- function(r, minWidth, maxWidth) {
+  range_of_values <- maxWidth - minWidth
+  unit <- range_of_values / precision_scale
+  minWidth + unit * abs(signif(r, 2)) * precision_scale
+}
+
+E(g)$width <- edgeWidth(E(g)$R, edge_min_width, edge_max_width)
+```
+
+### Edge Continuity according to P value
+
+```{r}
+E(g)$lty <- ifelse(E(g)$P > 0.05, "dotted", "solid")
+```
+
+### Edge Curve
+
+```{r}
+E(g)$curved <- seq(0, 0.7, length = ecount(g))
+```
+
+### Selected - NnSelected Vertex (-prefix)
+
+```{r}
+V(g)$selected <- grepl(as_ids(V(g)), pattern="^S")
+V(g)$label <- ifelse(V(g)$selected, substract_prefix(V(g)$name, "Sel"), substract_prefix(V(g)$name, "NnSel"))
+V(g)$color <- ifelse(V(g)$selected, "gray60", "gray90")
+```
+
+### Vertex Static Attributes
 
 ```{r fig.align="center"}
-default_graph_aesthetic(g)
+V(g)$size <- 40
+V(g)$frame.color <- ifelse(degree(g) > 1, "forestgreen", "gray")
+V(g)$frame.width <- 2
+V(g)$label.cex <- 2
+V(g)$label.family=""
+V(g)$label.cex=1.4
+V(g)$label.color="black"
 
 plot(g, layout = layout, asp = 0.4)
 ```
 
-## Custom Aesthetics
+## Default Aesthetics
 
-For even more precise aesthetics, you can consult the design thumbnail of the package in which each of the default aesthetics functions is precisely implemented.
+You can select one of the default esthetic functions (like default_vertex_aes(g), ...) or apply them all with the following function.
+
+```{r fig.align="center"}
+g <- default_graph_aesthetic(g)
+
+plot(g, layout = layout, asp = 0.4)
+```

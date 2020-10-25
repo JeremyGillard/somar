@@ -9,6 +9,9 @@ default_vertex_aes(g)
 \arguments{
 \item{g}{the graph concerned}
 }
+\value{
+igraph::graph. The the graph with the ethic.
+}
 \description{
 default_vertex_aes applies a default vertex aesthetics for
 the graph
