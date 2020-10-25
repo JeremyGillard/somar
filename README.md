@@ -9,6 +9,7 @@
 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)](https://opensource.org/licenses/)
 [![R build
 status](https://github.com/JeremyGillard/somar/workflows/R-CMD-check/badge.svg)](https://github.com/JeremyGillard/somar/actions)
+[![Release](https://img.shields.io/github/v/release/JeremyGillard/somar)](https://github.com/JeremyGillard/somar/releases)
 <!-- Coverage badge --> <!-- Version/Release badge -->
 <!-- badges: end -->
 
