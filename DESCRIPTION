@@ -1,6 +1,6 @@
 Package: somar
 Title: Somatotopy R tools
-Version: 0.10.0
+Version: 0.11.0
 Authors@R: c(
     person(given = "Jeremy",
            family = "Gillard",
