@@ -22,7 +22,7 @@ knitr::opts_chunk$set(
 options(width = 300)
 ```
 
-# Data Selection, Dataframe Unit Construction
+# Data Selection, Dataframe Units Construction
 
 Assuming that the following dataframe is what you initially have at your disposal.
 
@@ -64,10 +64,14 @@ for (n in 1:nrow(metaframe)) {
   for (metadata in names(metaframe)) {
     dataframe_units[[n]][[metadata]] <- as.numeric(metaframe[n, metadata])
   }
+  final_dataframe_unit <- data.frame()
   for (i in 1:length(params)) {
     temp_dataframe <- params_dataframes_list[[i]][n,]
     row.names(temp_dataframe) <- params[i]
+    temp_dataframe <- substract_prefix_from_all_column(temp_dataframe, paste(params[i], "_", sep=""))
+    final_dataframe_unit <- rbind(final_dataframe_unit, temp_dataframe)
   }
+  dataframe_units[[n]][["data"]] <- final_dataframe_unit
 }
-dataframe_units
+dataframe_units[[1]]
 ```
