@@ -20,6 +20,7 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+options(width = 300)
 ```
 
 # Initial Idea
@@ -39,9 +40,8 @@ My first objective was therefore to construct a Graph representation of the data
 
 The data given to me was in the following form.
 
-```{r include=FALSE}
+```{r}
 library(somar)
-options(width = 300)
 ```
 
 For a better readability of the code, the dataframe included in the package initially under the name somar::experimental_data.df will simply be named df.
