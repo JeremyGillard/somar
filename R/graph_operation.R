@@ -21,4 +21,34 @@ node_vector_from_dataframe_unit <- function(dataframe) {
   unlist(lapply(names.vec, function(str) { unlist(str_split(str, "_")) }))
 }
 
-
+#' layout_in_semicircle
+#'
+#' Graph layout with vertices on a semicircle.
+#'
+#' Layout in semicircle places vertices on a semicircle, in the order of their vertex ids.
+#'
+#' @param graph the input graph.
+#'
+#' @importFrom igraph vcount
+#'
+#' @return A numeric matrix with two columns, and one row for each vertex.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#'     layout_in_semicircle(graph)
+#' }
+layout_in_semicircle <- function(graph) {
+  number_of_vertex <- vcount(graph)
+  layout_matrix <- matrix(ncol = 2)
+  for (i in 1:number_of_vertex) {
+    x <- cos((i * pi / number_of_vertex) - (pi / number_of_vertex) / 2)
+    y <- sin((i * pi / number_of_vertex) - (pi / number_of_vertex) / 2)
+    if (is.na(layout_matrix[1, 1])) {
+      layout_matrix[1,] <- c(x, y)
+    } else {
+      layout_matrix <- rbind(layout_matrix, c(x, y))
+    }
+  }
+  layout_matrix
+}
