@@ -10,6 +10,7 @@
 #'
 #' @param dataframe a dataframe.
 #' @param column_regex_pattern character string containing a regular expression that represente the column selection.
+#' If an empty chain is passed the dataframe will be returned intact.
 #' @param inverse logical. The function returns the inverse of the result if this parameter is set to true.
 #'
 #' @return returns a part of the original dataframe
