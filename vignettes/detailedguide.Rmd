@@ -78,3 +78,22 @@ dataframe_units[[1]]
 
 # Graph Construction
 
+In this part it is first described how to construct a graph from one of the dataframes of the previously constructed list. At the end of the guide it will be shown how to create a set of graphs directly from the whole list.
+
+It is first necessary to build the structure of the graph and to assign the parameters recorded in one of the dataframes built previously.
+
+```{r fig.align="center"}
+library(igraph)
+
+selected.df <- dataframe_units[[1]][["data"]]
+
+nodes.vec <- node_vector_from_dataframe_unit(selected.df)
+
+g <- graph(nodes.vec, directed = FALSE)
+
+for (i in 1:nrow(selected.df)) {
+  g %>% set_edge_attr(row.names(selected.df)[i], value = as.vector(t(selected.df[i,])))
+}
+
+plot(g)
+```
