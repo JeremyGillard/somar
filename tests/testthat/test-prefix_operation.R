@@ -26,6 +26,22 @@ test_that("substract prefix works", {
   expect_equal(expect.str, result.str)
 })
 
+A_Column1 <- c(1, 2)
+A_Column2 <- c(3, 4)
+A_Column3 <- c(5, 6)
+
+Column1 <- c(1, 2)
+Column2 <- c(3, 4)
+Column3 <- c(5, 6)
+
+test_that("prefix vector works with a special prefix separator", {
+  df <- data.frame(A_Column1, A_Column2, A_Column3)
+  expect.df <- data.frame(Column1, Column2, Column3)
+  result.df <- substract_prefix_from_all_column(df, "A_")
+  expect_equal(expect.df, result.df)
+})
+
+
 A_column <- c(1, 2, 3)
 B_column <- c(4, 5, 6)
 C_column <- c(7, 8, 9)

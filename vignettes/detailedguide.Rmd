@@ -59,5 +59,15 @@ After that it can be interesting to gather the R, CI and P data according to the
 
 ```{r}
 dataframe_units <- list()
-nrow(metaframe)
+for (n in 1:nrow(metaframe)) {
+  dataframe_units[[n]] <- list()
+  for (metadata in names(metaframe)) {
+    dataframe_units[[n]][[metadata]] <- as.numeric(metaframe[n, metadata])
+  }
+  for (i in 1:length(params)) {
+    temp_dataframe <- params_dataframes_list[[i]][n,]
+    row.names(temp_dataframe) <- params[i]
+  }
+}
+dataframe_units
 ```

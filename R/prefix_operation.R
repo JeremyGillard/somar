@@ -46,6 +46,35 @@ substract_prefix <- function(word, prefix) {
 }
 
 
+#' substract_prefix_from_all_column
+#'
+#' Subtracts the indicated prefix from all the columns of the dataframe.
+#'
+#' substract_prefix_from_all_column subtracts the specified prefix from all the
+#' columns of the dataframe and returns a new dataframe.
+#'
+#' @param dataframe data.frame. The dataframe from which the column prefixes must be removed.
+#' @param prefix string. The prefix to subtract from column names.
+#'
+#' @return returns a new dataframe identical but without prefix to the column names.
+#' @export
+#'
+#' @examples
+#' A_Column1 <- c(1, 2)
+#' A_Column2 <- c(3, 4)
+#' A_Column3 <- c(5, 6)
+#' df <- data.frame(A_Column1, A_Column2, A_Column3)
+#'
+#' newdf <- substract_prefix_from_all_column(df, "A_")
+substract_prefix_from_all_column <- function(dataframe, prefix) {
+  temp_dataframe <- dataframe
+  names(temp_dataframe) <- sapply(
+    X = names(temp_dataframe),
+    FUN = function(column_name) substract_prefix(column_name, prefix))
+  temp_dataframe
+}
+
+
 #' prefix_vector
 #'
 #' Extracts and returns a vector of column prefixes of a dataframe according to a separator
