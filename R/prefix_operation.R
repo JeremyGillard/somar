@@ -23,6 +23,29 @@ extract_prefix <- function(word, separator) {
 }
 
 
+#' substract_prefix
+#'
+#' Subtracts the prefix of the word entered as a parameter
+#'
+#' subtracts the prefix of the word entered as a parameter and returns the same word without prefix.
+#'
+#' @param word string. The word from which the prefix must be removed.
+#' @param prefix string. The prefix to be removed from the word.
+#'
+#' @return returns the word without the prefix.
+#' @export
+#'
+#' @examples
+#' str <- "abcd"
+#' word <- substract_prefix(str, "ab")
+#'
+#' column_name <- "R_column"
+#' word <- substract_prefix(column_name, "R_")
+substract_prefix <- function(word, prefix) {
+  substr(word, nchar(prefix) + 1, nchar(word))
+}
+
+
 #' prefix_vector
 #'
 #' Extracts and returns a vector of column prefixes of a dataframe according to a separator

@@ -3,4 +3,5 @@
 export(extract_prefix)
 export(prefix_vector)
 export(separate_data)
+export(substract_prefix)
 importFrom(stringr,str_split)
