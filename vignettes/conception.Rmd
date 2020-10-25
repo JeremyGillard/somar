@@ -283,7 +283,7 @@ precision_scale <- 1000
 color_pallet <- color_scale(precision_scale);
 
 edgeColor <- function(r) {
-  color_pallet[abs(signif(r, 2)) * precision_scale]
+  color_pallet[abs(signif(r, 3)) * precision_scale]
 }
 
 E(g)$color <- edgeColor(E(g)$R)
