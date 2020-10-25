@@ -25,8 +25,8 @@
 #' Bs <- separate_data(df, "^B")
 #' notBs <- separate_data(df, "^B", inverse = TRUE)
 separate_data <- function(dataframe, column_regex_pattern, inverse=FALSE) {
-  if (!inverse)
-    dataframe[grep(column_regex_pattern, names(dataframe))]
-  else
+  if (inverse)
     dataframe[-grep(column_regex_pattern, names(dataframe))]
+  else
+    dataframe[grep(column_regex_pattern, names(dataframe))]
 }

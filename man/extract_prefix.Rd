@@ -25,5 +25,5 @@ str <- "abc"
 extract_prefix(str, "b")
 
 str <- "B_column"
-extract_prefix(str, "_")
+prefix <- extract_prefix(str, "_")
 }

@@ -29,11 +29,32 @@ Assuming that the following dataframe is what you initially have at your disposa
 ```{r}
 library(somar)
 df <- somar::experimental_data.df
-df
+str(df)
 ```
 
 In order to be displayed in a graph, the dataframe informations must first be correctly selected and filtered.
 
 ```{r}
+metaframe <- separate_data(df, "\\_[A-z]+\\_", inverse = TRUE)
+dataframe <- separate_data(df, "\\_[A-z]+\\_")
 
+params <- prefix_vector(dataframe, "_")
+params_dataframes_list <- list()
+for (param in params) {
+  params_dataframes_list[[param]] <- separate_data(dataframe, paste("^", param, sep=""))
+}
 ```
+
+This gives us in this case 4 dataframe.
+
+```{r}
+metaframe
+```
+
+```{r}
+params_dataframes_list
+```
+
+After that it can be interesting to gather the R, CI and P data according to the metadata.
+
+

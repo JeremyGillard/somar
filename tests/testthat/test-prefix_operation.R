@@ -19,3 +19,14 @@ test_that("extract prefix works with a special string", {
   result.str <- extract_prefix(str, "_")
   expect_equal(expect.str, result.str)
 })
+
+A_column <- c(1, 2, 3)
+B_column <- c(4, 5, 6)
+C_column <- c(7, 8, 9)
+
+test_that("prefix list works with a special prefix separator", {
+  df <- data.frame(A_column, B_column, C_column)
+  expect.vec <- c("A", "B", "C")
+  result.vec <- prefix_vector(df, "_")
+  expect_equal(expect.vec, result.vec)
+})
