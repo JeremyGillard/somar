@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 
 # Road Map
 
-Pour tirer un maximum de cette première version, le dataframe à traiter doit idéalement respecter une certaine convention de nommage de ces colonnes.
+To get the most out of this first version, the dataframe to be processed should ideally respect a certain naming convention for these columns.
 
 - First of all, the names related to the somatotopy zones must be prefixed with a Salt or NnSel to designate whether it is a selected zone or not. 
 
