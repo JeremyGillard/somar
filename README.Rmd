@@ -54,6 +54,12 @@ The second way is to use each of the functions available in the dataframe separa
 vignette("detailedguide", package = "somar")
 ```
 
+## Legend
+
+Pending a more practical integration solution, here is the legend corresponding to the results obtained using the automatic graphing tool.
+
+<img src="./man/figures/graphlegend.png" width="44%" />
+
 ## License
 
 somar is <a href="./LICENSE">GPL-3 licensed</a>

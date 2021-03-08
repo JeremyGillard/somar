@@ -60,6 +60,13 @@ dataframe separately, in order to use them in a more personalised way.
 vignette("detailedguide", package = "somar")
 ```
 
+## Legend
+
+Pending a more practical integration solution, here is the legend
+corresponding to the results obtained using the automatic graphing tool.
+
+<img src="./man/figures/graphlegend.png" width="44%" />
+
 ## License
 
 somar is <a href="./LICENSE">GPL-3 licensed</a>
