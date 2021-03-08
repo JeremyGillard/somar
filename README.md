@@ -9,8 +9,7 @@
 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)](https://opensource.org/licenses/)
 [![R build
 status](https://github.com/JeremyGillard/somar/workflows/R-CMD-check/badge.svg)](https://github.com/JeremyGillard/somar/actions)
-[![Release](https://img.shields.io/github/v/release/JeremyGillard/somar)](https://github.com/JeremyGillard/somar/releases)
-<!-- https://shields.io/category/license for badge creation -->
+<!-- Coverage badge --> <!-- Version/Release badge -->
 <!-- badges: end -->
 
 ## Overview
@@ -36,6 +35,7 @@ You can install the released and development version from
 
 ``` r
 # install.packages("devtools")
+# library('devtools')
 devtools::install_github("JeremyGillard/somar", build_vignettes = TRUE)
 ```
 

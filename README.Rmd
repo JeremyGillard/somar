@@ -32,6 +32,7 @@ You can install the released and development version from [GitHub](https://githu
 
 ``` r
 # install.packages("devtools")
+# library('devtools')
 devtools::install_github("JeremyGillard/somar", build_vignettes = TRUE)
 ```
 
