@@ -34,9 +34,10 @@ You can install the released and development version from
 [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("devtools")
-# library('devtools')
+install.packages("devtools")
+library("devtools")
 devtools::install_github("JeremyGillard/somar", build_vignettes = TRUE)
+library("somar")
 ```
 
 R version: 3.6.3
